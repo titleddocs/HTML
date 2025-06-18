@@ -1,0 +1,30 @@
+<button onclick="copyText()">Copy</button>
+<textarea id="myText">Copy me!</textarea>
+
+<script>
+  function copyText() {
+    const textarea = document.getElementById("myText");
+
+    // 新しいClipboard APIが使える場合（推奨）
+    if (navigator.clipboard && window.isSecureContext) {
+      navigator.clipboard.writeText(textarea.value).then(() => {
+        alert("Copied!");
+      }).catch(err => {
+        fallbackCopy();
+      });
+    } else {
+      // Safari対応の古い方法
+      fallbackCopy();
+    }
+
+    function fallbackCopy() {
+      textarea.select();
+      try {
+        const success = document.execCommand("copy");
+        alert(success ? "Copied!" : "Copy failed.");
+      } catch (err) {
+        alert("Copy not supported.");
+      }
+    }
+  }
+</script>
